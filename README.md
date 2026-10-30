@@ -1,65 +1,111 @@
-# Dumpstarr Database for Profilarr
+# Lean profiles for Profilarr
 
-## **For a media setup that isn't a dumpster fire :D**
+A fork of the [Dumpstarr database](https://github.com/Dumpstarr/Database) that adds profiles
+preferring good HEVC encodes to h264, so a library gets smaller as files are upgraded. Anime gets
+lighter releases and season packs.
 
-[![Discord](https://img.shields.io/discord/1408095311661891796?label=Discord&logo=discord&style=for-the-badge)](https://discord.gg/TbYW2Q4hGv)
+Upstream's profiles, formats and per-show fixes are all here, unchanged. Upstream's
+[README](https://github.com/Dumpstarr/Database#readme) is the guide to them. This fork adds:
 
----
+| Profile | Arr | Based on |
+|---|---|---|
+| `Lean TV 1080p` | Sonarr | `TV 1080p` |
+| `Lean Movies 1080p` | Radarr | `Movies 1080p` |
+| `Lean Anime 1080p` | Sonarr, Radarr | `Anime 1080p` |
+| `Lean Anime Keep` | Sonarr, Radarr | `Lean Anime 1080p`, with upgrades off |
+| `1080p LQ`, `1080p LQ - No Upgrades Min 0`, `Simpsons 4:3` | Sonarr | none: these are some local profiles I already had for random stuff that I kept around. I'll probably delete them one day. |
 
-### **Simple, Set-and-Forget Custom Formats**
+## Why
 
-The Dumpstarr database for Profilarr is a curated collection of **custom formats** for **Sonarr** and **Radarr**, designed to simplify sourcing high-quality, decently sized media.
+h264's wider compatibility is worth less than it used to be: many clients play HEVC, and a
+server that has to transcode often transcodes to HEVC anyway (at least that's what often happens on my server). 
+A well-made HEVC encode is usually a fraction of the size of the h264 release it would replace. Upstream's 
+TV profile bans x265 outside its top WEB tiers, and its tiers rank release groups without regard to codec, so it keeps
+the larger file even when a trusted HEVC encode exists.
 
-**Our Focus:**
-* **Simplicity:** Choose your resolution.
-* **Quality Sourcing:** We use a set of formats/regex based on **Dictionarry** and **TRaSH** to better score and source your media.
+## How the scoring works
 
----
+**Upstream is the base.** Each Lean profile is a copy of its upstream profile, made when the
+database is built (`INSERT … SELECT`), and changed after that. Upstream's bans, tiers and fixes
+reach the Lean profiles at every merge.
 
-### **Profile Selection Guide**
+**Dictionarry decides which HEVC groups are trusted.** The HEVC formats are copied from the
+`1080p Efficient` profile in [Dictionarry's database](https://github.com/Dictionarry-Hub/database)
+(MIT), each renamed `Lean …`. The copy takes every format that profile scores at or above its
+lowest HEVC format, with the conditions and per-group patterns behind it. That gives per-source
+tiers (TV Bluray 1–6 and WEB 1–5; movie Bluray 1–4 and WEB 1–4), per-encoder formats for QxR,
+TAoE, Vialle and Weasley releases posted under another group's name, HONE's Bluray and WEB
+formats, and `1080p WEB-DL HEVC` for untouched HEVC streams. A generator script I run rewrites
+`ops/100000`–`100004` from Dictionarry's current lists, so they stay Dictionarry's rather than a
+snapshot.
 
-> [!TIP]
-> We recommend starting with the `Movies 1080p/2160p` and `TV 1080p/2160p` profiles.
+**Dictionarry's order on Dumpstarr's scale.** Dictionarry's scores (around 900,000) can't be used
+as they are, because they would swamp Dumpstarr's −10,000 bans. For each arr, the copied scores
+are mapped in a straight line onto a band that starts above the best score an h264 release
+reaches in the profile and ends at its upgrade-until score. A tier Dictionarry adds or moves
+falls into place on the line.
 
-| Profile | Media Type | Use Case |
-| :--- | :--- | :--- |
-| `LQ 1080p` | Low-Priority Media | Maximum storage savings |
-| `Anime 1080p` | Anime | Anime TV and Movies |
-| `TV 1080p` | TV Shows |1080p |
-| `TV 2160p` | 4K TV Shows | 4K with HDR and Dolby Vision |
-| `Movies 1080p` | 1080p Movies | Streaming Optimized 1080p |
-| `Movies 2160p` | 4K Movies | Streaming Optimized 4K with HDR and Dolby Vision |
-| `Movies 1080p HQ` | HQ Movies | 1080p, higher video bitrates and HQ audio formats |
-| `Movies 2160p HQ` | HQ 4K Movies | 4K, higher video bitrates and HQ audio formats |
+| | TV (Sonarr) | Movies (Radarr) |
+|---|---|---|
+| Untouched HEVC WEB-DL, HONE WEB | 2400 | 2600 |
+| Top HEVC encode tier (HONE Bluray) | 2300 | 2500 |
+| HEVC Bluray tiers | 2060–2033 | 2300–2283 |
+| HEVC WEB tiers | 1933–1900 | 2191–2175 |
+| Best h264, upstream's tiers | about 1850 | about 2025–2140 |
+| Upgrade until | 2300 | 2500 |
 
----
+**An untouched HEVC WEB-DL ranks first.** Dictionarry puts HONE's Bluray encodes above it. This
+fork ranks a streaming service's own HEVC stream rip first since there is no second encode to lose detail in, and
+it is still smaller than the h264 stream from the same service. Both sit at or past
+upgrade-until, so neither replaces the other once one is on disk. TBH I don't even know if many streaming services
+actually stream much HEVC, but it seems reasonable that if they do they should rank above re-encodes if they are from
+a good group.
 
-### **Underlying Structure and Tiers**
+**Other changes, and why:**
 
-Our profiles are loosely based on the structure of the **SQP-1 Alternative (Radarr)** and **WEB-2160p/1080p Alternative (Sonarr)** profiles from TRaSH.
+- **One 1080p quality group** (WEB-DL, WEBRip, Bluray-1080p), so the score decides. Otherwise the
+  quality ranking would put a WEB h264 above a Bluray-sourced HEVC encode in TV, and a Bluray h264
+  above a WEB HEVC in movies.
+- **Untrusted x265 is banned in TV.** `Lean x265 (Untrusted)` replaces upstream's `x265` ban.
+  It exempts every group the copied formats name, and TRaSH's WEB tiers 01–03. Movies keep
+  upstream's minimum of 750 instead, so a group on no list can't be grabbed.
+- **h264 stays the fallback.** A title with no trusted HEVC release gets the same h264 file
+  upstream would pick.
+- **Upgrades stop at the top HEVC encode tier**, so a good file isn't replaced again and again.
+- **TV:** HD Bluray Tier 01 and 02 drop from 1800 and 1750 to 1450 and 1400. Once qualities are
+  flattened, they would otherwise favour large h264 Bluray encodes.
+- **Movies:** the hallowed and BHDStudio boosts are dropped, since both favour x264. Lossless
+  audio is allowed, because many good x265 encodes carry it. Upstream's `LQ` is swapped for
+  `Lean LQ`, the same pattern without Tigole, a QxR member.
+- **Interactions with upstream formats:** `LQ` still bans iVy, which Dictionarry ranks in its
+  lowest TV tiers. `Baseline Groups` still adds to QxR, DarQ, Vyndros, Weasley and edge2020,
+  which moves them up within the HEVC order.
 
-* **Release Group Tiers:** We have developed a hybrid setup of the **TRaSH Guides** tiers with our own additions for more functionality and scoring than default. 
+**Anime.** Upstream's v2 anime profile already flattens 1080p and ranks WEB tiers above BD tiers.
+`Lean Anime 1080p` adds `Lean Anime HEVC` +200 and `Season Pack` +150. It lowers `Anime Dual
+Audio` and `Multi-Audio` to +25, a slight preference rather than a requirement. Upgrade until is
+1600. The `Lean Anime` quality sizes cap 1080p at 80 MB a minute, which turns away remux-sized
+releases. Quality sizes apply to a whole arr instance, so they belong only on one that holds
+nothing but anime. Upstream's bans for raws, foreign-subtitle and dub-only releases stay. These are 
+literally just my own preferences tailored to my specific anime sonarr instance, so buy and large if
+you are looking for something generic and "set and forget" for anime you're probably better off with 
+Dumpstarr's profiles.
 
----
+## Maintenance
 
-### **Fixes & Features**
+- This fork's ops are numbered from 100000, so every upstream op runs first. Every entity they
+  create is prefixed `Lean`, apart from the three local profiles I keep around.
+- Upstream is merged into `stable`. I run a weekly job that merges Dumpstarr, regenerates the
+  HEVC formats from Dictionarry, builds the database, checks that each Lean profile still scores
+  everything its upstream profile does and that every regex compiles in .NET, and opens a pull
+  request with the score changes that I'll merge when I remember to.
 
-We include several specific fixes and features for common media-sourcing annoyances:
-* Bad Multis: Avoids releases where bad release names causes incorrect parsing or loops.
----
-| Show | Detail | 
-| :--- | :--- | 
-|Adventure Time|Correctly sources releases that follow TheTVDB ordering for Season 8.|
-|Anne of Green Gables|Avoids releases where bad release names cause incorrect parsing or loops.|
-|Arthur|Avoids releases where bad release names cause incorrect parsing or loops.|
-|The Big Bang Theory|Avoids 25fps PAL versions.|
-|Courage the Cowardly Dog|Avoids releases where bad release names cause incorrect parsing or loops.|
-|Family Guy|Avoids 25fps PAL versions.|
-|The Four Seasons|Avoids releases where bad release names cause incorrect parsing or loops.|
-|House|Correctly sources releases that follow TheTVDB ordering for Season 6.|
-|The Office (US)|Prefer "Superfans" versions and negate releases from groups that have issues with TheTVDB ordering.|
-|Parks and Recreation|Avoids releases with incorrect source IDs which cause loops.|
-|Phineas and Ferb|Negate releases from groups that have issues with TheTVDB ordering.|
-|Scrubs|Avoids 25fps PAL versions.|
-|Spider-Noir|Prefer "Authentic B&W" versions.|
-|Whose Line Is It Anyway (US|Targets correct releases for early seasons of the US version due to inconsistent naming.|
+## Credits
+
+[Dumpstarr](https://github.com/Dumpstarr/Database) for the base database,
+[Dictionarry](https://github.com/Dictionarry-Hub/database) (MIT) for the HEVC formats and group
+lists, and [TRaSH Guides](https://trash-guides.info) for the tiers both build on.
+
+(Shoutout to those guys for doing all of the real work. I had claude throw this together for me to solve some
+of my personal peeves with the existing profiles. I'm far too lazy to go fully down the release scoring rabbit hole and 
+storage is fucking expensive nowadays.)
