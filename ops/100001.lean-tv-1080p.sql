@@ -9,12 +9,14 @@
 -- - the x265 ban is replaced by Lean x265 (Untrusted);
 -- - Dictionarry's HEVC formats keep Dictionarry's order, scored from 1900 to
 --   2300, above every h264 tier; untouched HEVC WEB-DLs come first, at 2400;
--- - upgrades stop at the top HEVC encode tier, 2300.
+-- - upgrades stop at the top HEVC encode tier, 2300;
+-- - an upgrade must gain 100, more than the season pack bonus and the gap between two HEVC tiers.
 
 insert into "quality_profiles" ("name", "description", "upgrades_allowed", "minimum_custom_format_score", "upgrade_until_score", "upgrade_score_increment") values ('Lean TV 1080p', 'Copy of TV 1080p that prefers trusted x265 encodes to save space.
 - x265 from the Lean HEVC tiers is preferred over h264 WEB-DLs; untrusted x265 is banned.
 - h264 WEB-DLs remain the fallback when no trusted x265 release exists.
-- Upgrades stop at a tier 1 HEVC release.', 1, 0, 2300, 1);
+- Upgrades stop at a tier 1 HEVC release.
+- An upgrade must gain 100 points, more than a season pack''s bonus.', 1, 0, 2300, 100);
 insert into "tags" ("name") values ('1080p') on conflict ("name") do nothing;
 INSERT INTO quality_profile_tags (quality_profile_name, tag_name) VALUES ('Lean TV 1080p', '1080p');
 insert into "tags" ("name") values ('Sonarr') on conflict ("name") do nothing;

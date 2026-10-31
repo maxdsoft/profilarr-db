@@ -9,12 +9,14 @@
 -- - Dictionarry's HEVC formats keep Dictionarry's order, scored from 2175 to
 --   2500, above every h264 tier; untouched HEVC WEB-DLs come first, at 2600;
 -- - the minimum score stays, so a release from a group on no list can't be grabbed;
--- - upgrades stop at the top HEVC encode tier, 2500.
+-- - upgrades stop at the top HEVC encode tier, 2500;
+-- - an upgrade must gain 100, more than the gap between two HEVC tiers.
 
 insert into "quality_profiles" ("name", "description", "upgrades_allowed", "minimum_custom_format_score", "upgrade_until_score", "upgrade_score_increment") values ('Lean Movies 1080p', 'Copy of Movies 1080p that prefers trusted x265 encodes to save space.
 - x265 from the Lean HEVC tiers is preferred over x264 Bluray encodes and h264 WEB-DLs.
 - Lossless audio is allowed.
-- Upgrades stop at a tier 1 HEVC release.', 1, 750, 2500, 1);
+- Upgrades stop at a tier 1 HEVC release.
+- An upgrade must gain 100 points, more than the gap between two HEVC tiers.', 1, 750, 2500, 100);
 insert into "tags" ("name") values ('1080p') on conflict ("name") do nothing;
 INSERT INTO quality_profile_tags (quality_profile_name, tag_name) VALUES ('Lean Movies 1080p', '1080p');
 insert into "tags" ("name") values ('Radarr') on conflict ("name") do nothing;

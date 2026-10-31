@@ -3,7 +3,9 @@
 -- Lean Anime 1080p copies Anime 1080p (scores, quality list, language) at replay time, then:
 -- - HEVC releases get +200 and season packs +150;
 -- - dual and multi audio drop to +25, a slight preference instead of a strong one;
--- - upgrades stop at 1600 instead of continuing indefinitely.
+-- - upgrades stop at 1600 instead of continuing indefinitely;
+-- - an upgrade must gain 200, more than the season pack bonus, so a pack of the release
+--   already on disk is not grabbed again.
 --
 -- Lean Anime Keep is Lean Anime 1080p with upgrades off, for series whose existing files should be kept.
 --
@@ -15,7 +17,8 @@
 insert into "quality_profiles" ("name", "description", "upgrades_allowed", "minimum_custom_format_score", "upgrade_until_score", "upgrade_score_increment") values ('Lean Anime 1080p', 'Copy of Anime 1080p tuned for smaller files.
 - HEVC releases and season packs are preferred.
 - Dual audio is only slightly preferred; English subtitles are still expected from the tiered groups.
-- Upgrades stop at a good release instead of continuing indefinitely.', 1, 0, 1600, 1);
+- Upgrades stop at a good release instead of continuing indefinitely.
+- An upgrade must gain 200 points, more than a season pack''s bonus: HEVC over h264 is enough, one tier on the same codec is not.', 1, 0, 1600, 200);
 insert into "tags" ("name") values ('1080p') on conflict ("name") do nothing;
 INSERT INTO quality_profile_tags (quality_profile_name, tag_name) VALUES ('Lean Anime 1080p', '1080p');
 insert into "tags" ("name") values ('Anime') on conflict ("name") do nothing;
@@ -36,7 +39,7 @@ INSERT INTO quality_profile_custom_formats (quality_profile_name, custom_format_
 
 -- Lean Anime Keep: same scoring, upgrades off
 insert into "quality_profiles" ("name", "description", "upgrades_allowed", "minimum_custom_format_score", "upgrade_until_score", "upgrade_score_increment") values ('Lean Anime Keep', 'Lean Anime 1080p with upgrades off.
-- For series whose existing files should stay as they are.', 0, 0, 1600, 1);
+- For series whose existing files should stay as they are.', 0, 0, 1600, 200);
 insert into "tags" ("name") values ('1080p') on conflict ("name") do nothing;
 INSERT INTO quality_profile_tags (quality_profile_name, tag_name) VALUES ('Lean Anime Keep', '1080p');
 insert into "tags" ("name") values ('Anime') on conflict ("name") do nothing;
