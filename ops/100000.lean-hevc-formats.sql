@@ -224,14 +224,14 @@ INSERT INTO tags (name) VALUES ('HEVC') ON CONFLICT (name) DO NOTHING;
 INSERT INTO regular_expression_tags (regular_expression_name, tag_name) VALUES ('Lean QxR', 'HEVC');
 INSERT INTO tags (name) VALUES ('Dictionarry') ON CONFLICT (name) DO NOTHING;
 INSERT INTO regular_expression_tags (regular_expression_name, tag_name) VALUES ('Lean QxR', 'Dictionarry');
-INSERT INTO regular_expressions (name, pattern, regex101_id, description) VALUES ('Lean QxR (Radarr)', '(?<=\b[12]\d{3}\b).*(\b(QxR|afm72|Bandi|Bluespots|Celdra|FreetheFish|Garshasp|Ghost|Ime|Kappa|Langbard|LION|Panda|MONOLITH|Natty|r00t|RCVR|RZeroX|SAMPA|Silence|t3nzin|Tigole|YOGI)\b)', NULL, '');
+INSERT INTO regular_expressions (name, pattern, regex101_id, description) VALUES ('Lean QxR (Radarr)', '(?<=\b[12]\d{3}\b).*\b(QxR|afm72|Bandi|Bluespots|Celdra|FreetheFish|Garshasp|Ghost|Ime|Kappa|Langbard|LION|Panda|MONOLITH|Natty|r00t|RCVR|RZeroX|SAMPA|Silence|t3nzin|Tigole|YOGI)\b', NULL, '');
 INSERT INTO tags (name) VALUES ('Lean') ON CONFLICT (name) DO NOTHING;
 INSERT INTO regular_expression_tags (regular_expression_name, tag_name) VALUES ('Lean QxR (Radarr)', 'Lean');
 INSERT INTO tags (name) VALUES ('HEVC') ON CONFLICT (name) DO NOTHING;
 INSERT INTO regular_expression_tags (regular_expression_name, tag_name) VALUES ('Lean QxR (Radarr)', 'HEVC');
 INSERT INTO tags (name) VALUES ('Dictionarry') ON CONFLICT (name) DO NOTHING;
 INSERT INTO regular_expression_tags (regular_expression_name, tag_name) VALUES ('Lean QxR (Radarr)', 'Dictionarry');
-INSERT INTO regular_expressions (name, pattern, regex101_id, description) VALUES ('Lean QxR (Sonarr)', '(?<=\b(?:S\d{1,3}|\d{3,4}p)\b).*(\b(QxR|afm72|Bandi|Bluespots|Celdra|FreetheFish|Garshasp|Ghost|Ime|Kappa|Langbard|LION|Panda|MONOLITH|Natty|r00t|RCVR|RZeroX|SAMPA|Silence|t3nzin|Tigole|YOGI)\b)', NULL, NULL);
+INSERT INTO regular_expressions (name, pattern, regex101_id, description) VALUES ('Lean QxR (Sonarr)', '(?<=\b(?:S\d{1,3}|\d{3,4}p)\b).*\b(QxR|afm72|Bandi|Bluespots|Celdra|FreetheFish|Garshasp|Ghost|Ime|Kappa|Langbard|LION|Panda|MONOLITH|Natty|r00t|RCVR|RZeroX|SAMPA|Silence|t3nzin|Tigole|YOGI)\b', NULL, NULL);
 INSERT INTO tags (name) VALUES ('Lean') ON CONFLICT (name) DO NOTHING;
 INSERT INTO regular_expression_tags (regular_expression_name, tag_name) VALUES ('Lean QxR (Sonarr)', 'Lean');
 INSERT INTO tags (name) VALUES ('HEVC') ON CONFLICT (name) DO NOTHING;
@@ -280,14 +280,14 @@ INSERT INTO tags (name) VALUES ('HEVC') ON CONFLICT (name) DO NOTHING;
 INSERT INTO regular_expression_tags (regular_expression_name, tag_name) VALUES ('Lean TAoE', 'HEVC');
 INSERT INTO tags (name) VALUES ('Dictionarry') ON CONFLICT (name) DO NOTHING;
 INSERT INTO regular_expression_tags (regular_expression_name, tag_name) VALUES ('Lean TAoE', 'Dictionarry');
-INSERT INTO regular_expressions (name, pattern, regex101_id, description) VALUES ('Lean TAoE (Radarr)', '(?<=\b[12]\d{3}\b).*(\b(TAoE|Ainz|AJJMIN|ANONAZ|ArcX|bccornfo|DNU|DrainedDay|DUHIT|Erie|Frys|Goki|HxD|jb2049|JBENT|Nostradamus|r0b0t|Species180|TheSickle|xtrem3x|WEM)\b)', NULL, '');
+INSERT INTO regular_expressions (name, pattern, regex101_id, description) VALUES ('Lean TAoE (Radarr)', '(?<=\b[12]\d{3}\b).*\b(TAoE|Ainz|AJJMIN|ANONAZ|ArcX|bccornfo|DNU|DrainedDay|DUHIT|Erie|Frys|Goki|HxD|jb2049|JBENT|Nostradamus|r0b0t|Species180|TheSickle|xtrem3x|WEM)\b', NULL, '');
 INSERT INTO tags (name) VALUES ('Lean') ON CONFLICT (name) DO NOTHING;
 INSERT INTO regular_expression_tags (regular_expression_name, tag_name) VALUES ('Lean TAoE (Radarr)', 'Lean');
 INSERT INTO tags (name) VALUES ('HEVC') ON CONFLICT (name) DO NOTHING;
 INSERT INTO regular_expression_tags (regular_expression_name, tag_name) VALUES ('Lean TAoE (Radarr)', 'HEVC');
 INSERT INTO tags (name) VALUES ('Dictionarry') ON CONFLICT (name) DO NOTHING;
 INSERT INTO regular_expression_tags (regular_expression_name, tag_name) VALUES ('Lean TAoE (Radarr)', 'Dictionarry');
-INSERT INTO regular_expressions (name, pattern, regex101_id, description) VALUES ('Lean TAoE (Sonarr)', '(?<=\b(?:S\d{1,3}|\d{3,4}p)\b).*(\b(TAoE|Ainz|AJJMIN|ANONAZ|ArcX|bccornfo|DNU|DrainedDay|DUHIT|Erie|Frys|Goki|HxD|jb2049|JBENT|Nostradamus|r0b0t|Species180|TheSickle|xtrem3x|WEM)\b)', NULL, NULL);
+INSERT INTO regular_expressions (name, pattern, regex101_id, description) VALUES ('Lean TAoE (Sonarr)', '(?<=\b(?:S\d{1,3}|\d{3,4}p)\b).*\b(TAoE|Ainz|AJJMIN|ANONAZ|ArcX|bccornfo|DNU|DrainedDay|DUHIT|Erie|Frys|Goki|HxD|jb2049|JBENT|Nostradamus|r0b0t|Species180|TheSickle|xtrem3x|WEM)\b', NULL, NULL);
 INSERT INTO tags (name) VALUES ('Lean') ON CONFLICT (name) DO NOTHING;
 INSERT INTO regular_expression_tags (regular_expression_name, tag_name) VALUES ('Lean TAoE (Sonarr)', 'Lean');
 INSERT INTO tags (name) VALUES ('HEVC') ON CONFLICT (name) DO NOTHING;
@@ -1186,13 +1186,17 @@ INSERT INTO condition_patterns (custom_format_name, condition_name, regular_expr
 
 -- Remux named in the release title, outside DVD sources. Banned in Lean TV 1080p and
 -- Lean Movies 1080p, whose 1080p group holds Remux-1080p for encodes read as remuxes at import.
+-- A file on disk is also scored by its name, and the arrs write their quality into it as
+-- [Remux-1080p] (Radarr) or [Bluray-1080p Remux] (Sonarr); the pattern leaves those two out,
+-- so an encode read as a remux is not banned once it is renamed.
+insert into "regular_expressions" ("name", "pattern", "description", "regex101_id") values ('Lean Remux', '(?<!\[(Bluray-\d{3,4}p )?)Remux|\[Remux(?!-\d{3,4}p)', 'Remux, except the quality names Radarr and Sonarr write into file names.', NULL);
 insert into "custom_formats" ("name", "description") values ('Lean Remux', 'Remux named in the release title, outside DVD sources.');
 insert into "tags" ("name") values ('Lean') on conflict ("name") do nothing;
 INSERT INTO custom_format_tags (custom_format_name, tag_name) VALUES ('Lean Remux', 'Lean');
 insert into "tags" ("name") values ('Banned') on conflict ("name") do nothing;
 INSERT INTO custom_format_tags (custom_format_name, tag_name) VALUES ('Lean Remux', 'Banned');
 INSERT INTO custom_format_conditions (custom_format_name, name, type, arr_type, negate, required) VALUES ('Lean Remux', 'Remux', 'release_title', 'all', 0, 1);
-INSERT INTO condition_patterns (custom_format_name, condition_name, regular_expression_name) VALUES ('Lean Remux', 'Remux', 'Remux');
+INSERT INTO condition_patterns (custom_format_name, condition_name, regular_expression_name) VALUES ('Lean Remux', 'Remux', 'Lean Remux');
 INSERT INTO custom_format_conditions (custom_format_name, name, type, arr_type, negate, required) VALUES ('Lean Remux', 'Not DVD', 'source', 'all', 1, 1);
 INSERT INTO condition_sources (custom_format_name, condition_name, source) VALUES ('Lean Remux', 'Not DVD', 'dvd');
 
