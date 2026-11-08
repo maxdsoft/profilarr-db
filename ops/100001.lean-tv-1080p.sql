@@ -4,6 +4,9 @@
 -- upstream changes to its bans and tiers carry over. Then:
 -- - the 1080p qualities share one group, so a Bluray-sourced x265 encode can
 --   outrank a WEB-DL on score alone;
+-- - Remux-1080p joins that group, because an encode whose embedded MKV title
+--   still names its remux source is read as one at import; Lean Remux is
+--   banned instead, so a release named as a remux is still refused;
 -- - HD Bluray tiers drop below the WEB tiers, so flattening doesn't start
 --   preferring larger h264 Bluray encodes;
 -- - the x265 ban is replaced by Lean x265 (Untrusted);
@@ -31,6 +34,7 @@ INSERT INTO quality_groups (quality_profile_name, name) VALUES ('Lean TV 1080p',
 INSERT INTO quality_group_members (quality_profile_name, quality_group_name, quality_name, position) VALUES ('Lean TV 1080p', '1080p', 'WEBDL-1080p', 0);
 INSERT INTO quality_group_members (quality_profile_name, quality_group_name, quality_name, position) VALUES ('Lean TV 1080p', '1080p', 'WEBRip-1080p', 1);
 INSERT INTO quality_group_members (quality_profile_name, quality_group_name, quality_name, position) VALUES ('Lean TV 1080p', '1080p', 'Bluray-1080p', 2);
+INSERT INTO quality_group_members (quality_profile_name, quality_group_name, quality_name, position) VALUES ('Lean TV 1080p', '1080p', 'Remux-1080p', 3);
 INSERT INTO quality_profile_qualities (quality_profile_name, quality_name, quality_group_name, position, enabled, upgrade_until) VALUES ('Lean TV 1080p', NULL, '1080p', 0, 1, 1);
 INSERT INTO quality_groups (quality_profile_name, name) VALUES ('Lean TV 1080p', 'WEB 720p');
 INSERT INTO quality_group_members (quality_profile_name, quality_group_name, quality_name, position) VALUES ('Lean TV 1080p', 'WEB 720p', 'WEBDL-720p', 0);
@@ -71,4 +75,5 @@ INSERT INTO quality_profile_custom_formats (quality_profile_name, custom_format_
 INSERT INTO quality_profile_custom_formats (quality_profile_name, custom_format_name, arr_type, score) VALUES ('Lean TV 1080p', 'Lean 1080p Efficient TV Bluray Tier 6', 'sonarr', 1907);
 INSERT INTO quality_profile_custom_formats (quality_profile_name, custom_format_name, arr_type, score) VALUES ('Lean TV 1080p', 'Lean 1080p Efficient TV WEB Tier 5', 'sonarr', 1900);
 INSERT INTO quality_profile_custom_formats (quality_profile_name, custom_format_name, arr_type, score) VALUES ('Lean TV 1080p', 'Lean x265 (Untrusted)', 'sonarr', -10000);
+INSERT INTO quality_profile_custom_formats (quality_profile_name, custom_format_name, arr_type, score) VALUES ('Lean TV 1080p', 'Lean Remux', 'sonarr', -10000);
 INSERT INTO quality_profile_custom_formats (quality_profile_name, custom_format_name, arr_type, score) SELECT 'Lean TV 1080p', 'Season Pack', 'sonarr', 25 WHERE NOT EXISTS (SELECT 1 FROM quality_profile_custom_formats WHERE quality_profile_name = 'Lean TV 1080p' AND custom_format_name = 'Season Pack');

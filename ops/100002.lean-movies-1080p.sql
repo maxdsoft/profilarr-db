@@ -2,6 +2,9 @@
 --
 -- Scores and language are copied from Movies 1080p at replay time. Then:
 -- - Bluray-1080p and WEB-1080p share one group, so score decides between them;
+-- - Remux-1080p joins that group, because an encode whose embedded MKV title
+--   still names its remux source is read as one at import; Lean Remux is
+--   banned instead, so a release named as a remux is still refused;
 -- - the hallowed and BHDStudio boosts are dropped (they favour x264);
 -- - lossless audio (TrueHD, DTS-HD, DTS-X) is allowed, since many of the best
 --   x265 encodes carry it and audio transcodes cheaply;
@@ -30,6 +33,7 @@ INSERT INTO quality_groups (quality_profile_name, name) VALUES ('Lean Movies 108
 INSERT INTO quality_group_members (quality_profile_name, quality_group_name, quality_name, position) VALUES ('Lean Movies 1080p', '1080p', 'Bluray-1080p', 0);
 INSERT INTO quality_group_members (quality_profile_name, quality_group_name, quality_name, position) VALUES ('Lean Movies 1080p', '1080p', 'WEBDL-1080p', 1);
 INSERT INTO quality_group_members (quality_profile_name, quality_group_name, quality_name, position) VALUES ('Lean Movies 1080p', '1080p', 'WEBRip-1080p', 2);
+INSERT INTO quality_group_members (quality_profile_name, quality_group_name, quality_name, position) VALUES ('Lean Movies 1080p', '1080p', 'Remux-1080p', 3);
 INSERT INTO quality_profile_qualities (quality_profile_name, quality_name, quality_group_name, position, enabled, upgrade_until) VALUES ('Lean Movies 1080p', NULL, '1080p', 0, 1, 1);
 INSERT INTO quality_profile_qualities (quality_profile_name, quality_name, quality_group_name, position, enabled, upgrade_until) VALUES ('Lean Movies 1080p', 'Bluray-720p', NULL, 1, 1, 0);
 INSERT INTO quality_groups (quality_profile_name, name) VALUES ('Lean Movies 1080p', 'WEB-720p');
@@ -48,6 +52,7 @@ DELETE FROM quality_profile_custom_formats WHERE quality_profile_name = 'Lean Mo
 DELETE FROM quality_profile_custom_formats WHERE quality_profile_name = 'Lean Movies 1080p' AND custom_format_name = 'LQ';
 DELETE FROM quality_profile_custom_formats WHERE quality_profile_name = 'Lean Movies 1080p' AND custom_format_name = 'No Audio';
 INSERT INTO quality_profile_custom_formats (quality_profile_name, custom_format_name, arr_type, score) VALUES ('Lean Movies 1080p', 'Lean LQ', 'radarr', -10000);
+INSERT INTO quality_profile_custom_formats (quality_profile_name, custom_format_name, arr_type, score) VALUES ('Lean Movies 1080p', 'Lean Remux', 'radarr', -10000);
 INSERT INTO quality_profile_custom_formats (quality_profile_name, custom_format_name, arr_type, score) VALUES ('Lean Movies 1080p', 'Lean 1080p WEB-DL HEVC', 'radarr', 2600);
 INSERT INTO quality_profile_custom_formats (quality_profile_name, custom_format_name, arr_type, score) VALUES ('Lean Movies 1080p', 'Lean HONE WEB', 'radarr', 2600);
 INSERT INTO quality_profile_custom_formats (quality_profile_name, custom_format_name, arr_type, score) VALUES ('Lean Movies 1080p', 'Lean 1080p Bluray HEVC Tier 1', 'radarr', 2500);

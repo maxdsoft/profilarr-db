@@ -1184,6 +1184,18 @@ INSERT INTO condition_patterns (custom_format_name, condition_name, regular_expr
 INSERT INTO custom_format_conditions (custom_format_name, name, type, arr_type, negate, required) VALUES ('Lean LQ', 'TRaSH LQ (Sonarr)', 'release_group', 'sonarr', 0, 0);
 INSERT INTO condition_patterns (custom_format_name, condition_name, regular_expression_name) VALUES ('Lean LQ', 'TRaSH LQ (Sonarr)', 'TRaSH LQ (Sonarr)');
 
+-- Remux named in the release title, outside DVD sources. Banned in Lean TV 1080p and
+-- Lean Movies 1080p, whose 1080p group holds Remux-1080p for encodes read as remuxes at import.
+insert into "custom_formats" ("name", "description") values ('Lean Remux', 'Remux named in the release title, outside DVD sources.');
+insert into "tags" ("name") values ('Lean') on conflict ("name") do nothing;
+INSERT INTO custom_format_tags (custom_format_name, tag_name) VALUES ('Lean Remux', 'Lean');
+insert into "tags" ("name") values ('Banned') on conflict ("name") do nothing;
+INSERT INTO custom_format_tags (custom_format_name, tag_name) VALUES ('Lean Remux', 'Banned');
+INSERT INTO custom_format_conditions (custom_format_name, name, type, arr_type, negate, required) VALUES ('Lean Remux', 'Remux', 'release_title', 'all', 0, 1);
+INSERT INTO condition_patterns (custom_format_name, condition_name, regular_expression_name) VALUES ('Lean Remux', 'Remux', 'Remux');
+INSERT INTO custom_format_conditions (custom_format_name, name, type, arr_type, negate, required) VALUES ('Lean Remux', 'Not DVD', 'source', 'all', 1, 1);
+INSERT INTO condition_sources (custom_format_name, condition_name, source) VALUES ('Lean Remux', 'Not DVD', 'dvd');
+
 -- Anime: any HEVC release
 insert into "custom_formats" ("name", "description") values ('Lean Anime HEVC', 'x265/HEVC named in the release title.');
 insert into "tags" ("name") values ('Lean') on conflict ("name") do nothing;
