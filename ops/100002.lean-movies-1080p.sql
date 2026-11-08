@@ -6,6 +6,7 @@
 -- - lossless audio (TrueHD, DTS-HD, DTS-X) is allowed, since many of the best
 --   x265 encodes carry it and audio transcodes cheaply;
 -- - LQ is swapped for Lean LQ, which doesn't ban the QxR member Tigole;
+-- - No Audio is dropped: scene WEB releases never name an audio codec;
 -- - Dictionarry's HEVC formats keep Dictionarry's order, scored from 2175 to
 --   2500, above every h264 tier; untouched HEVC WEB-DLs come first, at 2600;
 -- - the minimum score stays, so a release from a group on no list can't be grabbed;
@@ -45,6 +46,7 @@ DELETE FROM quality_profile_custom_formats WHERE quality_profile_name = 'Lean Mo
 DELETE FROM quality_profile_custom_formats WHERE quality_profile_name = 'Lean Movies 1080p' AND custom_format_name = 'DTS-HD HRA';
 DELETE FROM quality_profile_custom_formats WHERE quality_profile_name = 'Lean Movies 1080p' AND custom_format_name = 'DTS-X';
 DELETE FROM quality_profile_custom_formats WHERE quality_profile_name = 'Lean Movies 1080p' AND custom_format_name = 'LQ';
+DELETE FROM quality_profile_custom_formats WHERE quality_profile_name = 'Lean Movies 1080p' AND custom_format_name = 'No Audio';
 INSERT INTO quality_profile_custom_formats (quality_profile_name, custom_format_name, arr_type, score) VALUES ('Lean Movies 1080p', 'Lean LQ', 'radarr', -10000);
 INSERT INTO quality_profile_custom_formats (quality_profile_name, custom_format_name, arr_type, score) VALUES ('Lean Movies 1080p', 'Lean 1080p WEB-DL HEVC', 'radarr', 2600);
 INSERT INTO quality_profile_custom_formats (quality_profile_name, custom_format_name, arr_type, score) VALUES ('Lean Movies 1080p', 'Lean HONE WEB', 'radarr', 2600);

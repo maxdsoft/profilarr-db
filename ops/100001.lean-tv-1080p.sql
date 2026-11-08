@@ -7,6 +7,8 @@
 -- - HD Bluray tiers drop below the WEB tiers, so flattening doesn't start
 --   preferring larger h264 Bluray encodes;
 -- - the x265 ban is replaced by Lean x265 (Untrusted);
+-- - No Audio is dropped: scene WEB releases and some encoders' file names never
+--   name an audio codec;
 -- - Dictionarry's HEVC formats keep Dictionarry's order, scored from 1900 to
 --   2300, above every h264 tier; untouched HEVC WEB-DLs come first, at 2400;
 -- - upgrades stop at the top HEVC encode tier, 2300;
@@ -43,6 +45,7 @@ INSERT INTO quality_profile_qualities (quality_profile_name, quality_name, quali
 INSERT INTO quality_profile_languages (quality_profile_name, language_name, type) SELECT 'Lean TV 1080p', language_name, type FROM quality_profile_languages WHERE quality_profile_name = 'TV 1080p';
 INSERT INTO quality_profile_custom_formats (quality_profile_name, custom_format_name, arr_type, score) SELECT 'Lean TV 1080p', custom_format_name, arr_type, score FROM quality_profile_custom_formats WHERE quality_profile_name = 'TV 1080p';
 DELETE FROM quality_profile_custom_formats WHERE quality_profile_name = 'Lean TV 1080p' AND custom_format_name = 'x265';
+DELETE FROM quality_profile_custom_formats WHERE quality_profile_name = 'Lean TV 1080p' AND custom_format_name = 'No Audio';
 UPDATE quality_profile_custom_formats SET score = 1450 WHERE quality_profile_name = 'Lean TV 1080p' AND custom_format_name = 'HD Bluray Tier 01';
 UPDATE quality_profile_custom_formats SET score = 1400 WHERE quality_profile_name = 'Lean TV 1080p' AND custom_format_name = 'HD Bluray Tier 02';
 INSERT INTO quality_profile_custom_formats (quality_profile_name, custom_format_name, arr_type, score) VALUES ('Lean TV 1080p', 'Lean 1080p WEB-DL HEVC', 'sonarr', 2400);
